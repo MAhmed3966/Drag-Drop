@@ -12,7 +12,8 @@ const RecommendedSearch = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
+      
       }}
     >
       <p className="searchMenu"  

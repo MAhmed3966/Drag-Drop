@@ -1,0 +1,15 @@
+<DndProvider backend={HTML5Backend}>
+        <FirstColumn title="First Column" className="column first-column">
+          {/* {
+            <MovableItem
+              isFirstColumn={isFirstColumn}
+              setIsFirstColumn={setIsFirstColumn}
+            />
+          } */}
+          { Item}
+        </FirstColumn>
+        <FirstColumn title="Second Column" className="column second-column">
+          {!isFirstColumn && Item}
+        </FirstColumn>
+        {/* <SecondColumn /> */}
+      </DndProvider>
