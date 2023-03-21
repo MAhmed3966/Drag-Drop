@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Redirect, Navigate } from "react-router-dom";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import Search from "../ImageGallery/Search";

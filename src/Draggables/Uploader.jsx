@@ -3,16 +3,17 @@ import { useDrop } from "react-dnd";
 import { useDropzone } from "react-dropzone";
 import { SearchContext } from "../Context/createContext";
 import "./Draggables.css";
+import { getLocalStorageValue, setLocalStorageValue } from "../Helpers/localStorage";
 // import { handleChange, handleSubmit } from "../HelpersFunctions/FileContent";
 
 const Uploader = ({ loader, setLoader }) => {
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({});
   const files = "";
   useEffect(() => {}, [files]);
-  const { value3, value4, value5 } = useContext(SearchContext);
+  const { value3, value4, value5, value7 } = useContext(SearchContext);
   const [selectedFile, setSelectedFile] = value3;
   const [information, setInformation] = value4;
   const [result, setResult] = value5;
+  const [isLoggedIn, setIsLoggedIn] = value7;
 
   const handleDragEnter = (event) => {
     event.preventDefault();
@@ -27,17 +28,27 @@ const Uploader = ({ loader, setLoader }) => {
   };
   const insertImageInformation = (data) => {
     setLoader(true);
-    setTimeout(() => {
+    // setTimeout(() => {
       setLoader(false);
       const imageObject = selectedFile;
       imageObject.push({
         imagSrc: data,
-        title: "",
+        imageTitle: "",
         description: "",
+        title:"",
         display: false,
       });
       setSelectedFile(imageObject);
-    }, 1000);
+      const key = "content@" + isLoggedIn.loggedInUser;
+      setLocalStorageValue(key, [
+        { [isLoggedIn.loggedInUser]: selectedFile },
+      ]);
+      // localStorage.setItem("content@"+isLoggedIn.loggedInUser,JSON.stringify([
+      //   {[isLoggedIn.loggedInUser] : selectedFile}
+      // ]))
+      const res = getLocalStorageValue(key)
+      console.log(res)
+    // }, 1000);
   };
   const handleDrop = (event) => {
     try {
@@ -53,10 +64,6 @@ const Uploader = ({ loader, setLoader }) => {
         if (alreayExist <= 0) {
           insertImageInformation(data);
         }
-          
-        // } else {
-        //   alert("image already added");
-        // }
       } else {
         insertImageInformation(data);
       }

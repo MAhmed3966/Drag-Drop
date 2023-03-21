@@ -13,7 +13,8 @@ const Login = () => {
     console.log(form.elements[0].value, form.elements[1].value)
     console.log(form.elements[1].value)
     if(credentials.password === form.elements[1].value) {
-      setIsLoggedIn(true)
+      setIsLoggedIn({...isLoggedIn, loggedIn:true, loggedInUser:form.elements[0].value})
+      console.log(setIsLoggedIn)
       navigate('/imageGallery')
     } else {
       alert("Invalid credentials")

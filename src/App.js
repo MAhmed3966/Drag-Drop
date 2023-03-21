@@ -8,6 +8,7 @@ import ModalContent from "./Modal/ModalContent";
 import Navbar from "./Navbar";
 import RouterSetup from "./Routes/Routes";
 import PrivateRoutes from "./Routes/PrivateRoutes";
+import { Navigate } from "react-router-dom";
 const renderBackdrop = (props) => {
   return (
     <div className="backdrop">
@@ -17,7 +18,10 @@ const renderBackdrop = (props) => {
 };
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState({
+    loggedIn: false,
+    loggedInUser: "",
+  });
   const [selectedFile, setSelectedFile] = useState([]);
   const [query, setQuery] = useState("Mountain");
   const [image, setImage] = useState([]);
@@ -27,9 +31,7 @@ function App() {
     description: "",
   });
 
-  useEffect(()=>{
-    
-  },[])
+  useEffect(() => {}, []);
 
   const [showModal, setShowModal] = useState({
     openState: false,
@@ -38,8 +40,6 @@ function App() {
   const handleClose = () => {
     setShowModal({ ...showModal, openState: false });
   };
-
-
 
   const handleShow = () => {
     return showModal.openState;
@@ -62,6 +62,7 @@ function App() {
       >
         <Navbar />
         <RouterSetup />
+
         <PrivateRoutes />
         <Modal
           className="modal"

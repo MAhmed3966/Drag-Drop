@@ -23,7 +23,7 @@ const Register = () => {
         navigate('/login');
     } else {
       localStorage.setItem(currentObject.email, JSON.stringify(currentObject));
-      setIsLoggedIn(true);
+      setIsLoggedIn({...isLoggedIn, loggedIn:true});
     }
   };
   return (

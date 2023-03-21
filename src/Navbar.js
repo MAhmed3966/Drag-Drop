@@ -36,7 +36,7 @@ const Navbar = () => {
               Image Gallery
             </a>
           </li>
-          {!isLoggedIn && (
+          {!isLoggedIn.loggedIn && (
             <>
               <li className="nav-item">
                 <a className="nav-link" href="/register">
@@ -50,14 +50,16 @@ const Navbar = () => {
               </li>
             </>
           )}
-          {isLoggedIn && (
+          {isLoggedIn.loggedIn && (
             <li className="nav-item">
-              <a className="nav-link" href="/login"
-              onClick={(e) => {
-                e.preventDefault()
-                setIsLoggedIn(false)
-                navigate('/')
-              }}
+              <a
+                className="nav-link"
+                href="/login"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsLoggedIn({...isLoggedIn, loggedIn:false});
+                  navigate("/");
+                }}
               >
                 Logout
               </a>

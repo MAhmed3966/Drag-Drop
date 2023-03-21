@@ -1,21 +1,21 @@
 import { useContext, useState } from "react";
-import { Route, Navigate, Routes } from "react-router-dom";
+import { Route, Navigate, Routes, useNavigate } from "react-router-dom";
 import { SearchContext } from "../Context/createContext";
 import Search from "../ImageGallery/Search";
 
 const PrivateRoutes = () => {
+  const navigate = useNavigate();
   const { value7 } = useContext(SearchContext);
   const [isLoggedIn, setIsLoggedIn] = value7;
   return (
     <Routes>
-      {console.log(isLoggedIn)}
-      {isLoggedIn ? (
-        <Route path="/imageGallery" element={<Search />} />
-      ) : (
-        <Navigate to="/dashboard" replace={true} />
-      )}
+      <Route
+        path="/imageGallery"
+        element={isLoggedIn.loggedIn ? <Search /> : <Navigate to="/" />}
+      />
     </Routes>
   );
 };
 
 export default PrivateRoutes;
+
