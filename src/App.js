@@ -1,9 +1,23 @@
-import { useState } from "react";
+import "./index.css";
+import { useEffect, useState } from "react";
 import { SearchContext } from "./Context/createContext";
 import Search from "./ImageGallery/Search";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+
+import Modal from "react-overlays/Modal";
+import ModalContent from "./Modal/ModalContent";
+import Navbar from "./Navbar";
+import RouterSetup from "./Routes/Routes";
+import PrivateRoutes from "./Routes/PrivateRoutes";
+const renderBackdrop = (props) => {
+  return (
+    <div className="backdrop">
+      <ModalContent />
+    </div>
+  );
+};
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedFile, setSelectedFile] = useState([]);
   const [query, setQuery] = useState("Mountain");
   const [image, setImage] = useState([]);
@@ -12,9 +26,29 @@ function App() {
     title: "",
     description: "",
   });
+
+  useEffect(()=>{
+    
+  },[])
+
+  const [showModal, setShowModal] = useState({
+    openState: false,
+    currentFile: "",
+  });
+  const handleClose = () => {
+    setShowModal({ ...showModal, openState: false });
+  };
+
+
+
+  const handleShow = () => {
+    return showModal.openState;
+  };
+
+  // const
+
   return (
     <div className="App">
-      {/* <DndProvider backend={HTML5Backend}> */}
       <SearchContext.Provider
         value={{
           value1: [query, setQuery],
@@ -22,12 +56,22 @@ function App() {
           value3: [selectedFile, setSelectedFile],
           value4: [information, setInformation],
           value5: [result, setResult],
+          value6: [showModal, setShowModal],
+          value7: [isLoggedIn, setIsLoggedIn],
         }}
       >
-        {/* <Uploader /> */}
-        <Search></Search>
+        <Navbar />
+        <RouterSetup />
+        <PrivateRoutes />
+        <Modal
+          className="modal"
+          show={showModal.openState}
+          onHide={handleClose}
+          renderBackdrop={renderBackdrop}
+        >
+          <h1>hello</h1>
+        </Modal>
       </SearchContext.Provider>
-      {/* </DndProvider> */}
     </div>
   );
 }

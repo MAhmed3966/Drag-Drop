@@ -19,7 +19,6 @@ const ImageGallery = (props) => {
 
   return (
     <div>
-      {/* {console.log(collected)} */}
 
       {image &&
         image.map((imgs) => {

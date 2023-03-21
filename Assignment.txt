@@ -1,0 +1,8 @@
+Local Storage
+
+
+-> Image has it's own attributes / create post 
+and also login system 
+
+-> convert the code in typescript 
+	
