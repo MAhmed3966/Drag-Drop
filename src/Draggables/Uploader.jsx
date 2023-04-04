@@ -3,17 +3,51 @@ import { useDrop } from "react-dnd";
 import { useDropzone } from "react-dropzone";
 import { SearchContext } from "../Context/createContext";
 import "./Draggables.css";
-import { getLocalStorageValue, setLocalStorageValue } from "../Helpers/localStorage";
+import {
+  getLocalStorageValue,
+  setLocalStorageValue,
+} from "../Helpers/localStorage";
 // import { handleChange, handleSubmit } from "../HelpersFunctions/FileContent";
 
 const Uploader = ({ loader, setLoader }) => {
+  const { value3, value4, value5, value7, value6 } = useContext(SearchContext);
+  const [isLoggedIn, setIsLoggedIn] = value7;
+  const key = "content@" + isLoggedIn.loggedInUser;
   const files = "";
   useEffect(() => {}, [files]);
-  const { value3, value4, value5, value7 } = useContext(SearchContext);
   const [selectedFile, setSelectedFile] = value3;
   const [information, setInformation] = value4;
   const [result, setResult] = value5;
-  const [isLoggedIn, setIsLoggedIn] = value7;
+  const [showModal, setShowModal] = value6;
+
+  useEffect(() => {
+    if (getLocalStorageValue(key) !== null) {
+      const imageContent = getLocalStorageValue(
+        "content@" + isLoggedIn.loggedInUser
+      );
+      console.log(imageContent);
+      if (imageContent.hasOwnProperty(isLoggedIn.loggedInUser)) {
+        setSelectedFile(imageContent[isLoggedIn.loggedInUser]);
+      }
+    }
+  }, []);
+  useEffect(() => {
+    if (
+      selectedFile.length > 0 &&
+      selectedFile[selectedFile.length - 1].display
+    ) {
+      let localValue = localStorage.getItem(key)
+        ? localStorage.getItem(key)
+        : {};
+      if (Object.keys(localValue).length === 0) {
+        localValue = { [isLoggedIn.loggedInUser]: selectedFile };
+      } else {
+        localValue = { [isLoggedIn.loggedInUser]: selectedFile };
+      }
+      setLocalStorageValue(key, localValue);
+      console.log(getLocalStorageValue(key));
+    }
+  }, [selectedFile]);
 
   const handleDragEnter = (event) => {
     event.preventDefault();
@@ -28,27 +62,24 @@ const Uploader = ({ loader, setLoader }) => {
   };
   const insertImageInformation = (data) => {
     setLoader(true);
-    // setTimeout(() => {
+    setTimeout(() => {
       setLoader(false);
       const imageObject = selectedFile;
       imageObject.push({
         imagSrc: data,
-        imageTitle: "",
+        postTitle: "",
         description: "",
-        title:"",
+        title: "",
+        postDescription: "",
         display: false,
       });
       setSelectedFile(imageObject);
-      const key = "content@" + isLoggedIn.loggedInUser;
-      setLocalStorageValue(key, [
-        { [isLoggedIn.loggedInUser]: selectedFile },
-      ]);
-      // localStorage.setItem("content@"+isLoggedIn.loggedInUser,JSON.stringify([
-      //   {[isLoggedIn.loggedInUser] : selectedFile}
-      // ]))
-      const res = getLocalStorageValue(key)
-      console.log(res)
-    // }, 1000);
+      setLocalStorageValue(key, [{ [isLoggedIn.loggedInUser]: selectedFile }]);
+      const res = getLocalStorageValue(key);
+    }, 1000);
+  };
+  const handleImageContent = (src) => {
+    setShowModal({ ...showModal, openState: true, currentFile: src });
   };
   const handleDrop = (event) => {
     try {
@@ -83,26 +114,7 @@ const Uploader = ({ loader, setLoader }) => {
       return info;
     });
   };
-  const handleChange = (event) => {
-    const newInformation = updateFileState(event);
-    setSelectedFile(newInformation);
-    // setInformation({ ...information, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (
-      !(
-        selectedFile[selectedFile.length - 1].title &&
-        selectedFile[selectedFile.length - 1].description
-      )
-    ) {
-      alert("Please enter All information");
-    } else {
-      setSelectedFile(updateFileState(event));
-    }
-  };
+  
   return (
     <div className="container" style={{ display: loader ? "none" : "block" }}>
       <div
@@ -111,49 +123,21 @@ const Uploader = ({ loader, setLoader }) => {
         onDrop={handleDrop}
       >
         Drag image here
+        {console.log(selectedFile)}
         {selectedFile.length > 0 && (
           <div style={{ color: "black" }}>
             {selectedFile.map((images) => {
-              return <img src={images.imagSrc} alt="Alternative Content"></img>;
+              return (
+                <img
+                  src={images.imagSrc}
+                  onClick={() => {
+                    console.log("checking if work");
+                    handleImageContent(images.imagSrc);
+                  }}
+                  alt="Alternative Content"
+                ></img>
+              );
             })}
-            <div className="formImage mt-3">
-              <form>
-                <div class="form-group">
-                  <label for="title">Enter Title</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    keyval={selectedFile[selectedFile.length - 1].imagSrc}
-                    aria-describedby="emailHelp"
-                    placeholder="Enter Title"
-                    defaultValue={""}
-                    name="title"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="description"
-                    placeholder="Description"
-                    name="description"
-                    onChange={handleChange}
-                    defaultValue={""}
-                    keyval={selectedFile[selectedFile.length - 1].imagSrc}
-                  />
-                </div>
-                <button
-                  class="btn btn-primary mt-3"
-                  id="buttonClick"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
           </div>
         )}
       </div>

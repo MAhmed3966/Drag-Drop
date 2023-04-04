@@ -9,14 +9,12 @@ const SelectedImages = () => {
   const handleOperation = (e, operation) => {
     e.preventDefault();
     if (operation === "edit") {
-      console.log(e.target.href)
       try {
         setShowModal({
           ...showModal,
           currentFile: e.target.href,
           openState: true,
         });
-        console.log(showModal)
         // setShowModal({ ...showModal, });
       } catch (e) {}
     } else {
@@ -26,8 +24,7 @@ const SelectedImages = () => {
       //   // openState: true,
       // });
       const filterArray = selectedFile.filter((file) => {
-        console.log(file.imagSrc)
-        console.log(e.target.href)
+
         return file.imagSrc !== e.target.href;
       });
       setSelectedFile(filterArray);
@@ -37,7 +34,7 @@ const SelectedImages = () => {
   return (
     <div>
       {selectedFile.map((images) => {
-        if (images.description && images.title && images.display) {
+        {/* if (images.description && images.title && images.display) { */}
           return (
             <div
               style={{
@@ -47,8 +44,8 @@ const SelectedImages = () => {
               }}
             >
               <img src={images.imagSrc}></img>
-              <div>{images.title}</div>
-              <div>{images.description}</div>
+              <div>{images.postTitle}</div>
+              <div>{images.postDescription}</div>
               <a
                 href={images.imagSrc}
                 onClick={(e) => {
@@ -68,7 +65,7 @@ const SelectedImages = () => {
               {/* {localStorage.getItem(images)[1]} */}
             </div>
           );
-        }
+        {/* } */}
       })}
     </div>
   );

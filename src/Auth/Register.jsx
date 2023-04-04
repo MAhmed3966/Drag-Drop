@@ -20,10 +20,15 @@ const Register = () => {
     }
     let isNull = localStorage.getItem(currentObject["email"]);
     if (isNull) {
-        navigate('/login');
+      navigate("/login");
     } else {
       localStorage.setItem(currentObject.email, JSON.stringify(currentObject));
-      setIsLoggedIn({...isLoggedIn, loggedIn:true});
+      setIsLoggedIn({
+        ...isLoggedIn,
+        loggedIn: true,
+        loggedInUser: form.elements[0].value,
+      });
+      navigate("/");
     }
   };
   return (

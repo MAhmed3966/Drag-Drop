@@ -32,6 +32,7 @@ const Search = () => {
       }
     });
   }, [query]);
+  
   return (
     <div className="DragMain">
       <div class="container" style={{ display: "block" }}>
