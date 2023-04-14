@@ -36,15 +36,7 @@ const ImageGallery = (props) => {
 
 export default ImageGallery;
 
-{
-  /* <img
-              key={imgs.secret}
-              ref={drag}
-              {...collected}
-              src={`https://farm${imgs.farm}.staticflickr.com/${imgs.server}/${imgs.id}_${imgs.secret}_m.jpg
-`}
-            /> */
-}
+
 
 
 
