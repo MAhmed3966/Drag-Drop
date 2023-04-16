@@ -1,6 +1,6 @@
 import "./index.css";
 import { useEffect, useState } from "react";
-import { SearchContext } from "./Context/createContext";
+import { SearchContext } from './Context/createContext';
 import Search from "./ImageGallery/Search";
 
 import Modal from "react-overlays/Modal";
@@ -9,7 +9,8 @@ import Navbar from "./Navbar";
 import RouterSetup from "./Routes/Routes";
 import PrivateRoutes from "./Routes/PrivateRoutes";
 import { Navigate } from "react-router-dom";
-const renderBackdrop = (props) => {
+import React from "react";
+const renderBackdrop = () => {
   return (
     <div className="backdrop">
       <ModalContent />
@@ -22,21 +23,20 @@ function App() {
     loggedIn: false,
     loggedInUser: "",
   });
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [selectedFile, setSelectedFile] = useState<any[]>([]);
   const [query, setQuery] = useState("Mountain");
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState<any[]>([]);
   const [result, setResult] = useState(false);
   const [information, setInformation] = useState({
     title: "",
     description: "",
   });
-
-  useEffect(() => {}, []);
-
   const [showModal, setShowModal] = useState({
     openState: false,
     currentFile: "",
   });
+  useEffect(() => {}, []);
+
   const handleClose = () => {
     setShowModal({ ...showModal, openState: false });
   };
@@ -51,13 +51,20 @@ function App() {
     <div className="App">
       <SearchContext.Provider
         value={{
-          value1: [query, setQuery],
-          value2: [image, setImage],
-          value3: [selectedFile, setSelectedFile],
-          value4: [information, setInformation],
-          value5: [result, setResult],
-          value6: [showModal, setShowModal],
-          value7: [isLoggedIn, setIsLoggedIn],
+          isLoggedIn,
+          selectedFile,
+          query,
+          image,
+          result,
+          information,
+          showModal,
+          setIsLoggedIn,
+          setSelectedFile,
+          setQuery,
+          setImage,
+          setResult,
+          setInformation,
+          setShowModal,
         }}
       >
         <Navbar />

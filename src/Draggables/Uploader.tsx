@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { DragEventHandler, useContext, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import { useDropzone } from "react-dropzone";
 import { SearchContext } from "../Context/createContext";
@@ -7,20 +7,20 @@ import {
   getLocalStorageValue,
   setLocalStorageValue,
 } from "../Helpers/localStorage";
+import React from "react";
+import { LoaderType } from "src/Interfaces/interfaces";
 // import { handleChange, handleSubmit } from "../HelpersFunctions/FileContent";
 
-const Uploader = ({ loader, setLoader }) => {
-  const { value3, value4, value5, value7, value6 } = useContext(SearchContext);
-  const [isLoggedIn, setIsLoggedIn] = value7;
+const Uploader = (props:LoaderType) => {
+  const { loader, setLoader } = props;
+  // const { value3, value4, value5, value7, value6 } = useContext(SearchContext);
+  const { selectedFile, setSelectedFile, information, setInformation, result, setResult, showModal, setShowModal,isLoggedIn, setIsLoggedIn } = useContext(SearchContext);
+  // const [isLoggedIn, setIsLoggedIn] = value7;
   const key = "content@" + isLoggedIn.loggedInUser;
   const files = "";
   useEffect(() => {}, [files]);
-  const [selectedFile, setSelectedFile] = value3;
-  const [information, setInformation] = value4;
-  const [result, setResult] = value5;
-  const [showModal, setShowModal] = value6;
-
   useEffect(() => {
+    console.log(getLocalStorageValue(key))
     if (getLocalStorageValue(key) !== null) {
       const imageContent = getLocalStorageValue(
         "content@" + isLoggedIn.loggedInUser
@@ -39,7 +39,7 @@ const Uploader = ({ loader, setLoader }) => {
       let localValue = localStorage.getItem(key)
         ? localStorage.getItem(key)
         : {};
-      if (Object.keys(localValue).length === 0) {
+      if (localValue && Object.keys(localValue).length === 0) {
         localValue = { [isLoggedIn.loggedInUser]: selectedFile };
       } else {
         localValue = { [isLoggedIn.loggedInUser]: selectedFile };
@@ -49,18 +49,18 @@ const Uploader = ({ loader, setLoader }) => {
     }
   }, [selectedFile]);
 
-  const handleDragEnter = (event) => {
+  // const handleDragEnter = (event) => {
+  //   event.preventDefault();
+  // };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-  };
-  const insertImageInformation = (data) => {
+  // const handleDragLeave = (event) => {
+  //   event.preventDefault();
+  // };
+  const insertImageInformation = (data:string) => {
     setLoader(true);
     setTimeout(() => {
       setLoader(false);
@@ -78,14 +78,15 @@ const Uploader = ({ loader, setLoader }) => {
       const res = getLocalStorageValue(key);
     }, 1000);
   };
-  const handleImageContent = (src) => {
+  const handleImageContent = (src:string) => {
     setShowModal({ ...showModal, openState: true, currentFile: src });
   };
-  const handleDrop = (event) => {
+  const handleDrop:React.DragEventHandler<HTMLDivElement> = (event) => {
     try {
       event.preventDefault();
       let alreayExist = 0;
-      const data = event.dataTransfer.getData("text/plain");
+      // const data:string = event != null? event.dataTransfer.getData("text/plain"):"";
+      const data: string = event != null ? event.dataTransfer.getData("text/plain") : "";
       if (selectedFile.length > 0) {
         selectedFile.map((file) => {
           if (file.imagSrc === data) {
@@ -100,20 +101,7 @@ const Uploader = ({ loader, setLoader }) => {
       }
     } catch (e) {}
   };
-  const updateFileState = (event) => {
-    return selectedFile.map((info) => {
-      if (info.imagSrc == selectedFile[selectedFile.length - 1].imagSrc) {
-        if (event.target.id === "buttonClick") {
-          return { ...info, display: true };
-        } else if (event.target.name === "title") {
-          return { ...info, title: event.target.value };
-        } else {
-          return { ...info, description: event.target.value };
-        }
-      }
-      return info;
-    });
-  };
+ 
   
   return (
     <div className="container" style={{ display: loader ? "none" : "block" }}>
@@ -123,7 +111,6 @@ const Uploader = ({ loader, setLoader }) => {
         onDrop={handleDrop}
       >
         Drag image here
-        {console.log(selectedFile)}
         {selectedFile.length > 0 && (
           <div style={{ color: "black" }}>
             {selectedFile.map((images) => {

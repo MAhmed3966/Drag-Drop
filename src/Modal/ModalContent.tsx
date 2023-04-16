@@ -1,32 +1,40 @@
 import { useContext } from "react";
 import { SearchContext } from "../Context/createContext";
 import "./Modal.css";
+import React from "react";
 const ModalContent = () => {
-  const { value3, value6 } = useContext(SearchContext);
-  const [showModal, setShowModal] = value6;
-  const [selectedFile, setSelectedFile] = value3;
+  const { selectedFile, setSelectedFile, showModal, setShowModal } =
+  useContext(SearchContext);
 
-  const updateFileState = (event) => {
+  const updateFileState = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     console.log(showModal.currentFile);
     return selectedFile.map((info) => {
-      if (info.imagSrc == showModal.currentFile) {
-        if (event.target.id === "buttonClick") {
+      if (info.imagSrc === showModal.currentFile) {
+        if ((event.target as HTMLButtonElement).id === "buttonClick") {
           return { ...info, display: true };
         } else {
-          return { ...info, [event.target.name]: event.target.value };
+          return { ...info, [(event.target as HTMLButtonElement).name]: (event.target as HTMLButtonElement).value };
         }
       }
       return info;
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const newInformation = updateFileState(event);
     console.log(newInformation);
     setSelectedFile(newInformation);
-
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let currentFile = selectedFile.find(
       (file) => file.imagSrc === showModal.currentFile
@@ -45,14 +53,13 @@ const ModalContent = () => {
     }
   };
 
-  const getDefaultValue = (name) => {
+  const getDefaultValue = (name: string) => {
     let currentFile = selectedFile.find((file) => {
-      if (file.imagSrc === showModal.currentFile) { 
-         return file
+      if (file.imagSrc === showModal.currentFile) {
+        return file;
       }
-      
     });
-    console.log(currentFile)
+    console.log(currentFile);
     return currentFile[name];
   };
   return (
@@ -70,26 +77,25 @@ const ModalContent = () => {
         </div>
         <div className="modal-desc">
           <form>
-            <div class="form-group">
+            <div className="form-group">
               <label htmlFor="description" className="content-modal">
                 Enter Image Title
               </label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="title"
                 placeholder="Enter Image Title"
                 name="title"
                 onChange={handleChange}
-                      defaultValue={getDefaultValue("title")}
-
+                defaultValue={getDefaultValue("title")}
               />
               <label htmlFor="description" className="content-modal">
                 Enter Image Description
               </label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id=""
                 placeholder="Description"
                 name="description"
@@ -101,22 +107,20 @@ const ModalContent = () => {
               </label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="postTitle"
-                keyval={selectedFile[selectedFile.length - 1].imagSrc}
                 placeholder="Enter Title"
                 onChange={handleChange}
                 name="postTitle"
                 defaultValue={getDefaultValue("postTitle")}
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label htmlFor="postDescription" className="content-modal">
                 Enter Post Description
               </label>
               <textarea
-                type="text"
-                class="form-control"
+                className="form-control"
                 id="postDescription"
                 placeholder="Description"
                 name="postDescription"
@@ -125,7 +129,7 @@ const ModalContent = () => {
               />
             </div>
             <button
-              class="btn btn-primary mt-5"
+              className="btn btn-primary mt-5"
               id="buttonClick"
               onClick={handleSubmit}
             >

@@ -3,6 +3,7 @@ import { useContext} from "react";
 import axios from "axios";
 import { SearchContext } from "../Context/createContext";
 import { useDrag } from "react-dnd";
+import React from "react";
 const ItemTypes = {
   CARD: "card",
   PHONE: "phone",
@@ -11,12 +12,10 @@ const ItemTypes = {
   DRINK: "drink",
 };
 
-const ImageGallery = (props) => {
+const ImageGallery = () => {
   // const { isFirstColumn, setIsFirstColumn } = props;
-  const { value1, value2 } = useContext(SearchContext);
-  const [query, setQuery] = value1;
-  const [image, setImage] = value2;
-
+  const { query, setQuery, image, setImage } = useContext(SearchContext);
+ 
   return (
     <div>
 

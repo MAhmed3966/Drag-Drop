@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { SearchContext } from "./Context/createContext";
 const Navbar = () => {
-  const { value7 } = useContext(SearchContext);
-  const [isLoggedIn, setIsLoggedIn] = value7;
+  const { isLoggedIn, setIsLoggedIn } = useContext(SearchContext);
   const navigate = useNavigate();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">

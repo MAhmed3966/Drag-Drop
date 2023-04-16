@@ -2,9 +2,9 @@ import axios from "axios";
 import { useContext, useEffect } from "react";
 import { SearchContext } from "../Context/createContext";
 import './Generic.css';
+import React from "react";
 const RecommendedSearch = () => {
-  const { value1, value2 } = useContext(SearchContext);
-  const [query, setQuery] = value1;
+  const { query, setQuery} = useContext(SearchContext);
 
  
 
